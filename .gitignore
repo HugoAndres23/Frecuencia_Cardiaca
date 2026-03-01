@@ -1,0 +1,168 @@
+# ===============================
+
+# Python
+
+# ===============================
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Compiled extensions
+
+*.so
+
+# Distribution / packaging
+
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===============================
+
+# Virtual Environments
+
+# ===============================
+
+venv/
+env/
+ENV/
+.venv/
+
+# ===============================
+
+# FastAPI / Uvicorn
+
+# ===============================
+
+*.log
+uvicorn.log
+
+# ===============================
+
+# Environment Variables
+
+# ===============================
+
+.env
+.env.*
+!.env.example
+
+# ===============================
+
+# Data Files (Experimental Data)
+
+# ===============================
+
+# Ignore uploaded datasets
+
+app/data/*
+!app/data/.gitkeep
+
+# ===============================
+
+# Jupyter / Scientific Tools
+
+# ===============================
+
+.ipynb_checkpoints
+
+# ===============================
+
+# IDEs & Editors
+
+# ===============================
+
+# VS Code
+
+.vscode/
+
+# PyCharm
+
+.idea/
+
+# Sublime
+
+*.sublime-project
+*.sublime-workspace
+
+# ===============================
+
+# OS Files
+
+# ===============================
+
+# Windows
+
+Thumbs.db
+Desktop.ini
+
+# macOS
+
+.DS_Store
+
+# Linux
+
+*~
+
+# ===============================
+
+# Testing / Coverage
+
+# ===============================
+
+htmlcov/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+
+# ===============================
+
+# Temporary Files
+
+# ===============================
+
+*.tmp
+*.temp
+*.swp
+
+# ===============================
+
+# Generated Reports
+
+# ===============================
+
+reports/
+*.pdf
+
+# ===============================
+
+# Node (future frontend)
+
+# ===============================
+
+node_modules/
+dist/
+build/
+
+# ===============================
+
+# Logs
+
+# ===============================
+
+logs/
+*.log
