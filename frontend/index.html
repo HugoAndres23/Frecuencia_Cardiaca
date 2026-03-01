@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HeartSim v1.0</title>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+
+    <script defer src="assets/js/api.js"></script>
+    <script defer src="assets/js/upload.js"></script>
+    <script defer src="assets/js/modeling.js"></script>
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            HeartSim v1.0
+        </div>
+
+        <nav>
+            <ul>
+                <li class="active">Panel de Control</li>
+                <li>Subir Datos</li>
+                <li>Configuración de Modelos</li>
+                <li>Metricas</li>
+                <li>Reportes</li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <h1>Simulación y Regresión de Frecuencia Cardíaca</h1>
+            <button id="generatePdfBtn">
+                Generar Reporte PDF
+            </button>
+        </header>
+
+        <!-- PANELS -->
+        <section class="panels">
+
+            <!-- Upload Card -->
+            <div class="card upload-card">
+                <h3>Subir Datos</h3>
+
+                <input type="file" id="fileInput" accept=".csv">
+                <button id="uploadBtn">Subir Archivo</button>
+
+                <p id="uploadStatus"></p>
+            </div>
+
+            <!-- Model Config -->
+            <div class="card model-card">
+                <h3>Configuración del Modelo de Regresión</h3>
+
+                <label>Algorithm</label>
+                <select id="modelType">
+                    <option value="linear">Lineal</option>
+                    <option value="polynomial">Polinomial</option>
+                    <option value="exponential">Exponencial</option>
+                </select>
+
+                <label>Grado de Polinomio</label>
+                <input type="range" id="degree" min="1" max="10" value="3">
+                <span id="degreeValue">Seleccionado:</span>
+
+                <button id="runModelBtn">
+                    Iniciar Simulación
+                </button>
+            </div>
+
+        </section>
+
+        <!-- RESULTS -->
+        <section class="results">
+            <h3>Resultados de la Simulación: Real vs Predicho</h3>
+
+            <canvas id="resultsChart"></canvas>
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

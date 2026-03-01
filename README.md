@@ -110,13 +110,13 @@ tiempo,actividad,fc
 
 ---
 
-## 👤 Autor
+## 👤 Autores
 
 Proyecto académico desarrollado por:
-
+```
 **Hugo Andrés Casas**
 **Juan Esteban Velez**
 **Carolina Londoño**
 **Santiago Solis**
-
+```
 ---

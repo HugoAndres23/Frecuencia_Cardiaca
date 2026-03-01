@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panels {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.results {
+    margin-top: 30px;
+}
