@@ -47,7 +47,7 @@ python --version
 
 ## 🚀 Instalación y Ejecución
 
-### 1️⃣ Clonar el repositorio
+### 1️ Clonar el repositorio
 
 ```bash
 git clone <URL_DEL_REPOSITORIO>
@@ -56,7 +56,7 @@ cd backend
 
 ---
 
-### 2️⃣ Crear entorno virtual
+### 2️ Crear entorno virtual
 
 #### Windows
 
@@ -67,7 +67,7 @@ venv\Scripts\activate
 
 ---
 
-### 3️⃣ Instalar dependencias
+### 3️ Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
@@ -75,7 +75,7 @@ pip install -r requirements.txt
 
 ---
 
-### 4️⃣ Ejecutar el servidor
+### 4️ Ejecutar el servidor
 
 ```bash
 uvicorn app.main:app --reload
@@ -87,6 +87,13 @@ Si todo funciona correctamente verá algo similar a:
 Uvicorn running on http://127.0.0.1:8000
 ```
 
+---
+
+### 5 Ejecutar el frontend
+
+```
+abrir archivo index.html
+```
 
 ## 📥 Formato del Archivo CSV
 
