@@ -4,23 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const runModelBtn = document.getElementById('runModelBtn');
     const modelType = document.getElementById('modelType');
 
-    // Update degree value display
     degreeSlider.addEventListener('input', (e) => {
         degreeValue.textContent = `Selected: ${e.target.value}`;
     });
 
-    // Run simulation
     runModelBtn.addEventListener('click', async () => {
         const algorithm = modelType.value;
         const degree = degreeSlider.value;
 
-        // Validation
         if (!algorithm) {
             alert('Por favor selecciona un algoritmo de modelado.');
             return;
         }
 
-        // Prepare payload
         const payload = {
             model_type: algorithm,
             degree: algorithm === 'polynomial' ? parseInt(degree) : 1,
@@ -33,10 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             runModelBtn.textContent = '⏳ Simulando...';
 
             const response = await post('/model/train', payload);
-            console.log('Modeling response:', response);
             if (response && response.results) {
-                // Display results
-                displayResults(response.results, response.metrics);
+                displayResults(response.results);
+                displayMetrics(response);
                 runModelBtn.textContent = '✓ Simulación Completada';
             } else {
                 alert('Falló la simulación.');
@@ -51,25 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function displayResults(results, metrics) {
+    function displayResults(results) {
         const canvas = document.getElementById('resultsChart');
         if (!canvas) return;
 
-        // Destroy existing chart if it exists
         if (window.resultsChartInstance) {
             window.resultsChartInstance.destroy();
         }
 
         const ctx = canvas.getContext('2d');
 
-        // Prepare data for Chart.js
         const labels = results.time_points || [];
         const realData = results.real_values || [];
         const predictedData = results.predicted_values || [];
-
-        console.log('Labels:', labels);
-        console.log('Real Data:', realData);
-        console.log('Predicted Data:', predictedData);
 
         window.resultsChartInstance = new Chart(ctx, {
             type: 'line',
@@ -134,5 +123,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    }
+
+    function displayMetrics(response) {
+        const panel = document.getElementById('metricsPanel');
+        const metrics = response.metrics;
+
+        document.getElementById('res-time').textContent =
+            response.training_time.toFixed(4) + ' s';
+
+        document.getElementById('res-algorithm').textContent =
+            response.degree
+                ? `${response.algorithm} (grado ${response.degree})`
+                : response.algorithm;
+
+        document.getElementById('res-mae').textContent  = metrics.mae.toFixed(4);
+        document.getElementById('res-mse').textContent  = metrics.mse.toFixed(4);
+        document.getElementById('res-rmse').textContent = metrics.rmse.toFixed(4);
+        document.getElementById('res-r2').textContent   = metrics.r2_score.toFixed(4);
+
+        panel.style.display = 'flex';
     }
 });

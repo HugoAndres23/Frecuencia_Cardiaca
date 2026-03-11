@@ -11,6 +11,8 @@
     <script defer src="assets/js/api.js"></script>
     <script defer src="assets/js/upload.js"></script>
     <script defer src="assets/js/modeling.js"></script>
+    <script defer src="assets/js/helpers.js"></script>
+    <script defer src="assets/js/pdfReport.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -59,20 +61,26 @@
                     <div class="config-section">
                         <label>TIPO DE ALGORITMO</label>
                         <select id="modelType" class="form-select">
-                            <option value="linear">Lineal (1)</option>
-                            <option value="polynomial" selected>Regresión Polinómica</option>
-                            <option value="exponential">Exponencial</option>
+                            <option value="polynomial" selected>Polynomial Regression</option>
+                            <option value="ridge">Ridge</option>
+                            <option value="lasso">Lasso</option>
+                            <option value="decision_tree">Decision Tree</option>
+                            <option value="random_forest">Random Forest</option>
+                            <option value="knn">K-Nearest Neighbors</option>
+                            <option value="svr">Support Vector Regression</option>
+                            <option value="gradient_boosting">Gradient Boosting</option>
+                            <option value="neural_network">Neurona Simple</option>
                         </select>
                     </div>
 
                     <div class="config-section">
-                        <label>GRADO DEL POLINOMIO (1-10)</label>
+                        <label>GRADO DEL POLINOMIO (1-20)</label>
                         <div class="slider-container">
-                            <input type="range" id="degree" class="slider" min="1" max="10" value="4">
+                            <input type="range" id="degree" class="slider" min="1" max="20" value="10">
                             <div class="slider-labels">
                                 <span>Lineal (1)</span>
-                                <span id="degreeValue" class="selected-degree">Seleccionado: 4</span>
-                                <span>Alto (10)</span>
+                                <span id="degreeValue" class="selected-degree">Seleccionado: 10</span>
+                                <span>Alto (20)</span>
                             </div>
                         </div>
                     </div>
@@ -87,11 +95,10 @@
             <section class="results-section">
                 <div class="card results-card">
                     <div class="card-header">
-                        <span class="card-icon">📊</span>
                         <h3>Resultados de la Simulación: Real vs. Predicho HR</h3>
                         <div class="chart-legend">
                             <span class="legend-item">
-                                <span class="legend-dot" style="background: rgba(55, 65, 81, 0.08);"></span>
+                                <span class="legend-dot" style="background: #111827;"></span>
                                 Datos Reales
                             </span>
                             <span class="legend-item">
@@ -103,6 +110,34 @@
 
                     <div class="chart-container">
                         <canvas id="resultsChart"></canvas>
+                    </div>
+
+                    <!-- MÉTRICAS Y TIEMPO -->
+                    <div id="metricsPanel" style="display:none;" class="metrics-panel">
+                        <div class="metric-item">
+                            <span class="metric-label">Tiempo de entrenamiento</span>
+                            <span class="metric-value" id="res-time">—</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Algoritmo</span>
+                            <span class="metric-value" id="res-algorithm">—</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">MAE</span>
+                            <span class="metric-value" id="res-mae">—</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">MSE</span>
+                            <span class="metric-value" id="res-mse">—</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">RMSE</span>
+                            <span class="metric-value" id="res-rmse">—</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">R² Score</span>
+                            <span class="metric-value" id="res-r2">—</span>
+                        </div>
                     </div>
                 </div>
             </section>
