@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             model_type: algorithm,
             degree: algorithm === 'polynomial' ? parseInt(degree) : 1,
             activity: 'reposo',
-            filename: 'dataset.csv'
+            filename: 'descarga.csv'
         };
         
         try {
@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
             runModelBtn.textContent = '⏳ Simulando...';
 
             const response = await post('/model/train', payload);
+            console.log('Respuesta del servidor:', response);
             if (response && response.results) {
                 displayResults(response.results);
-                displayMetrics(response);
+                // displayMetrics(response);
                 runModelBtn.textContent = '✓ Simulación Completada';
             } else {
                 alert('Falló la simulación.');
@@ -125,23 +126,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function displayMetrics(response) {
-        const panel = document.getElementById('metricsPanel');
-        const metrics = response.metrics;
+    // function displayMetrics(response) {
+    //     const panel = document.getElementById('metricsPanel');
+    //     const metrics = response.metrics;
 
-        document.getElementById('res-time').textContent =
-            response.training_time.toFixed(4) + ' s';
+    //     // document.getElementById('res-time').textContent =
+    //     //     response.training_time.toFixed(4) + ' s';
 
-        document.getElementById('res-algorithm').textContent =
-            response.degree
-                ? `${response.algorithm} (grado ${response.degree})`
-                : response.algorithm;
+    //     document.getElementById('res-algorithm').textContent =
+    //         response.degree
+    //             ? `${response.algorithm} (grado ${response.degree})`
+    //             : response.algorithm;
 
-        document.getElementById('res-mae').textContent  = metrics.mae.toFixed(4);
-        document.getElementById('res-mse').textContent  = metrics.mse.toFixed(4);
-        document.getElementById('res-rmse').textContent = metrics.rmse.toFixed(4);
-        document.getElementById('res-r2').textContent   = metrics.r2_score.toFixed(4);
+    //     document.getElementById('res-mae').textContent  = metrics.mae.toFixed(4);
+    //     document.getElementById('res-mse').textContent  = metrics.mse.toFixed(4);
+    //     document.getElementById('res-rmse').textContent = metrics.rmse.toFixed(4);
+    //     document.getElementById('res-r2').textContent   = metrics.r2_score.toFixed(4);
 
-        panel.style.display = 'flex';
-    }
+    //     panel.style.display = 'flex';
+    // }
 });
