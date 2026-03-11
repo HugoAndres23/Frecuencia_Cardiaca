@@ -4,9 +4,13 @@ from app.services.regression_service import run_model
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/train")
 def execute_model(request: ModelingRequest):
+    path = f"app/data/{request.filename}"
 
-    result = run_model(request)
+    if not open(path):
+        return {"error": "Archivo no encontrado"}
+
+    result = run_model(request, path)
 
     return result

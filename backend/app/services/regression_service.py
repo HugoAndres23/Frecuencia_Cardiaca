@@ -1,14 +1,24 @@
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 import numpy as np
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 
-def run_model(request):
 
-    path = f"app/data/{request.filename}"
+models = {
+    "Linear Regression": LinearRegression(),
+    "Ridge Regression": Ridge(),
+    "Lasso Regression": Lasso(),
+    "Decision Tree": DecisionTreeRegressor(),
+    "Random Forest": RandomForestRegressor()
+}
+
+def run_model(request, path):
+
     df = pd.read_csv(path)
-
     df = df[df["actividad"] == request.activity]
 
+    print(df)
     X = df["tiempo"].values.reshape(-1, 1)
     y = df["fc"].values
 
@@ -21,6 +31,12 @@ def run_model(request):
 
     return {
         "equation": equation,
-        "real_values": y.tolist(),
-        "predicted_values": predictions.tolist()
+        "results": {
+            "real_values": y.tolist(),
+            "predicted_values": predictions.tolist(),
+            "time_points": X.flatten().tolist()
+        },
+        "metrics": {
+            "r2_score": model.score(X, y)
+        }
     }
