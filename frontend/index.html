@@ -1,91 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>HeartSim v1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartSim v1.0 - Heart Rate Analysis</title>
 
-    <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/layout.css">
     <link rel="stylesheet" href="assets/css/components.css">
 
     <script defer src="assets/js/api.js"></script>
     <script defer src="assets/js/upload.js"></script>
     <script defer src="assets/js/modeling.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
 <div class="app-container">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo">
-            HeartSim v1.0
-        </div>
-
-        <nav>
-            <ul>
-                <li class="active">Panel de Control</li>
-                <li>Subir Datos</li>
-                <li>Configuración de Modelos</li>
-                <li>Metricas</li>
-                <li>Reportes</li>
-            </ul>
-        </nav>
-    </aside>
-
     <!-- MAIN -->
     <main class="main-content">
 
-        <!-- HEADER -->
+        <!-- HEADER/TOPBAR -->
         <header class="topbar">
-            <h1>Simulación y Regresión de Frecuencia Cardíaca</h1>
-            <button id="generatePdfBtn">
-                Generar Reporte PDF
-            </button>
+            <div class="header-left">
+                <h1 class="page-title">Heart Rate Simulation & Regression</h1>
+                <p class="page-subtitle">Analyzing variability using advanced mathematical regression models.</p>
+            </div>
         </header>
 
-        <!-- PANELS -->
-        <section class="panels">
+        <!-- MAIN PANELS -->
+        <div class="content-wrapper">
+            <section class="panels-section">
 
-            <!-- Upload Card -->
-            <div class="card upload-card">
-                <h3>Subir Datos</h3>
+                <!-- Upload Card -->
+                <div class="card upload-card">
+                    <div class="card-header">
+                        <h3>Subir Archivo</h3>
+                    </div>
 
-                <input type="file" id="fileInput" accept=".csv">
-                <button id="uploadBtn">Subir Archivo</button>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📄</div>
+                        <p class="upload-text">Arrastra archivos CSV o <a href="#" class="upload-link">buscar</a></p>
+                        <p class="upload-formats">Formatos Permitidos: .csv</p>
+                        <input type="file" id="fileInput" accept=".csv" hidden>
+                    </div>
 
-                <p id="uploadStatus"></p>
-            </div>
+                    <div id="uploadedFiles" class="uploaded-files"></div>
+                    <p id="uploadStatus" class="upload-status"></p>
+                </div>
 
-            <!-- Model Config -->
-            <div class="card model-card">
-                <h3>Configuración del Modelo de Regresión</h3>
+                <!-- Model Config Card -->
+                <div class="card model-card">
+                    <div class="card-header">
+                        <h3>Configuración del Modelo</h3>
+                    </div>
 
-                <label>Algorithm</label>
-                <select id="modelType">
-                    <option value="linear">Lineal</option>
-                    <option value="polynomial">Polinomial</option>
-                    <option value="exponential">Exponencial</option>
-                </select>
+                    <div class="config-section">
+                        <label>TIPO DE ALGORITMO</label>
+                        <select id="modelType" class="form-select">
+                            <option value="linear">Lineal (1)</option>
+                            <option value="polynomial" selected>Regresión Polinómica</option>
+                            <option value="exponential">Exponencial</option>
+                        </select>
+                    </div>
 
-                <label>Grado de Polinomio</label>
-                <input type="range" id="degree" min="1" max="10" value="3">
-                <span id="degreeValue">Seleccionado:</span>
+                    <div class="config-section">
+                        <label>GRADO DEL POLINOMIO (1-10)</label>
+                        <div class="slider-container">
+                            <input type="range" id="degree" class="slider" min="1" max="10" value="4">
+                            <div class="slider-labels">
+                                <span>Lineal (1)</span>
+                                <span id="degreeValue" class="selected-degree">Seleccionado: 4</span>
+                                <span>Alto (10)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="runModelBtn" class="btn-primary">
+                        ▶ Correr Simulación
+                    </button>
+                </div>
 
-                <button id="runModelBtn">
-                    Iniciar Simulación
-                </button>
-            </div>
+            </section>
 
-        </section>
+            <!-- RESULTS SECTION -->
+            <section class="results-section">
+                <div class="card results-card">
+                    <div class="card-header">
+                        <span class="card-icon">📊</span>
+                        <h3>Resultados de la Simulación: Real vs. Predicho HR</h3>
+                        <div class="chart-legend">
+                            <span class="legend-item">
+                                <span class="legend-dot" style="background: rgba(55, 65, 81, 0.08);"></span>
+                                Datos Reales
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-dot" style="background: #0066ff;"></span>
+                                Regresión del Modelo
+                            </span>
+                        </div>
+                    </div>
 
-        <!-- RESULTS -->
-        <section class="results">
-            <h3>Resultados de la Simulación: Real vs Predicho</h3>
+                    <div class="chart-container">
+                        <canvas id="resultsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-            <canvas id="resultsChart"></canvas>
-        </section>
+        <!-- PDF REPORT BUTTON -->
+        <div class="floating-action">
+            <button id="generatePdfBtn" class="btn-primary btn-large">
+                📄 Generar reporte PDF
+            </button>
+        </div>
 
     </main>
 </div>
