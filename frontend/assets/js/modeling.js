@@ -3,6 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const degreeValue = document.getElementById('degreeValue');
     const runModelBtn = document.getElementById('runModelBtn');
     const modelType = document.getElementById('modelType');
+    const datasetSelect = document.getElementById('datasetSelect');
+    const activitySelect = document.getElementById('activitySelect');
+
+    loadDatasets();
+
+    document.addEventListener('datasets:refresh', (event) => {
+        loadDatasets(event.detail?.selectedFile);
+    });
+
+    datasetSelect.addEventListener('change', () => {
+        loadActivities(datasetSelect.value);
+    });
 
     degreeSlider.addEventListener('input', (e) => {
         degreeValue.textContent = `Selected: ${e.target.value}`;
@@ -11,28 +23,39 @@ document.addEventListener('DOMContentLoaded', () => {
     runModelBtn.addEventListener('click', async () => {
         const algorithm = modelType.value;
         const degree = degreeSlider.value;
+        const selectedDataset = datasetSelect.value;
+        const selectedActivity = activitySelect.value;
 
         if (!algorithm) {
             alert('Por favor selecciona un algoritmo de modelado.');
             return;
         }
 
+        if (!selectedDataset) {
+            alert('Por favor selecciona un dataset para la simulacion.');
+            return;
+        }
+
+        if (!selectedActivity) {
+            alert('Por favor selecciona una actividad para la simulacion.');
+            return;
+        }
+
         const payload = {
             model_type: algorithm,
             degree: algorithm === 'polynomial' ? parseInt(degree) : 1,
-            activity: 'reposo',
-            filename: 'descarga.csv'
+            activity: selectedActivity,
+            filename: selectedDataset
         };
         
         try {
             runModelBtn.disabled = true;
-            runModelBtn.textContent = '⏳ Simulando...';
+            runModelBtn.textContent = 'Simulando...';
 
             const response = await post('/model/train', payload);
-            console.log('Respuesta del servidor:', response);
             if (response && response.results) {
                 displayResults(response.results);
-                // displayMetrics(response);
+                displayMetrics(response);
                 runModelBtn.textContent = '✓ Simulación Completada';
             } else {
                 alert('Falló la simulación.');
@@ -46,6 +69,76 @@ document.addEventListener('DOMContentLoaded', () => {
             runModelBtn.disabled = false;
         }
     });
+
+    async function loadDatasets(selectedFile = null) {
+        try {
+            datasetSelect.disabled = true;
+            datasetSelect.innerHTML = '<option value="">Cargando datasets...</option>';
+
+            const response = await get('/data/files');
+            const files = response.files || [];
+
+            datasetSelect.innerHTML = '';
+
+            if (!files.length) {
+                datasetSelect.innerHTML = '<option value="">No hay datasets disponibles</option>';
+                return;
+            }
+
+            files.forEach((file) => {
+                const option = document.createElement('option');
+                option.value = file;
+                option.textContent = file;
+                datasetSelect.appendChild(option);
+            });
+
+            const hasSelectedFile = selectedFile && files.includes(selectedFile);
+            datasetSelect.value = hasSelectedFile ? selectedFile : files[0];
+            await loadActivities(datasetSelect.value);
+        } catch (error) {
+            datasetSelect.innerHTML = '<option value="">Error cargando datasets</option>';
+            activitySelect.innerHTML = '<option value="">No hay actividades disponibles</option>';
+            console.error('Error obteniendo datasets:', error);
+        } finally {
+            datasetSelect.disabled = false;
+        }
+    }
+
+    async function loadActivities(dataset) {
+        if (!dataset) {
+            activitySelect.innerHTML = '<option value="">Selecciona un dataset</option>';
+            return;
+        }
+
+        try {
+            activitySelect.disabled = true;
+            activitySelect.innerHTML = '<option value="">Cargando actividades...</option>';
+
+            const response = await get(`/data/activities?filename=${encodeURIComponent(dataset)}`);
+            const activities = response.activities || [];
+
+            activitySelect.innerHTML = '';
+
+            if (!activities.length) {
+                activitySelect.innerHTML = '<option value="">No hay actividades disponibles</option>';
+                return;
+            }
+
+            activities.forEach((activity) => {
+                const option = document.createElement('option');
+                option.value = activity;
+                option.textContent = activity;
+                activitySelect.appendChild(option);
+            });
+
+            activitySelect.value = activities[0];
+        } catch (error) {
+            activitySelect.innerHTML = '<option value="">Error cargando actividades</option>';
+            console.error('Error obteniendo actividades:', error);
+        } finally {
+            activitySelect.disabled = false;
+        }
+    }
 
     function displayResults(results) {
         const canvas = document.getElementById('resultsChart');
@@ -126,23 +219,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // function displayMetrics(response) {
-    //     const panel = document.getElementById('metricsPanel');
-    //     const metrics = response.metrics;
+    function displayMetrics(response) {
+        const panel = document.getElementById('metricsPanel');
+        const metrics = response.metrics;
 
-    //     // document.getElementById('res-time').textContent =
-    //     //     response.training_time.toFixed(4) + ' s';
+        document.getElementById('res-time').textContent =
+        response.training_time.toFixed(4) + ' s';
 
-    //     document.getElementById('res-algorithm').textContent =
-    //         response.degree
-    //             ? `${response.algorithm} (grado ${response.degree})`
-    //             : response.algorithm;
+        document.getElementById('res-algorithm').textContent =
+            response.degree
+                ? `${response.algorithm} (grado ${response.degree})`
+                : response.algorithm;
 
-    //     document.getElementById('res-mae').textContent  = metrics.mae.toFixed(4);
-    //     document.getElementById('res-mse').textContent  = metrics.mse.toFixed(4);
-    //     document.getElementById('res-rmse').textContent = metrics.rmse.toFixed(4);
-    //     document.getElementById('res-r2').textContent   = metrics.r2_score.toFixed(4);
+        document.getElementById('res-mae').textContent  = metrics.mae.toFixed(4);
+        document.getElementById('res-mse').textContent  = metrics.mse.toFixed(4);
+        document.getElementById('res-rmse').textContent = metrics.rmse.toFixed(4);
+        document.getElementById('res-r2').textContent   = metrics.r2_score.toFixed(4);
 
-    //     panel.style.display = 'flex';
-    // }
+        panel.style.display = 'flex';
+    }
 });

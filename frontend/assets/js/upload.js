@@ -87,6 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Mostrar archivo subido
             displayUploadedFile(data.filename, file.size);
+            document.dispatchEvent(new CustomEvent("datasets:refresh", {
+                detail: { selectedFile: data.filename }
+            }));
             fileInput.value = "";
             statusElement.innerText = "Archivo cargado correctamente";
             statusElement.classList.add("success");
