@@ -5,3 +5,10 @@ class ModelingRequest(BaseModel):
     activity: str
     model_type: str
     degree: int | None = None
+
+
+class ReportRequest(BaseModel):
+    filename: str
+    activity: str
+    degree: int = 2
+    algorithms: list[str] | None = None

@@ -1,6 +1,6 @@
-# ❤️ Heart Rate Modeling & Simulation API
+# Heart Rate Modeling & Simulation API
 
-## 📌 Descripción del Proyecto
+## Descripción del Proyecto
 
 Este sistema permite:
 
@@ -14,7 +14,7 @@ El backend está desarrollado como una API REST usando FastAPI.
 
 ---
 
-## ⚙️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Backend
 
@@ -29,7 +29,7 @@ El backend está desarrollado como una API REST usando FastAPI.
 
 ---
 
-## ✅ Requisitos Previos
+## Requisitos Previos
 
 Antes de ejecutar el proyecto asegúrese de tener instalado:
 
@@ -45,7 +45,7 @@ python --version
 
 ---
 
-## 🚀 Instalación y Ejecución
+## Instalación y Ejecución
 
 ### 1️ Clonar el repositorio
 
@@ -95,7 +95,7 @@ Uvicorn running on http://127.0.0.1:8000
 abrir archivo index.html
 ```
 
-## 📥 Formato del Archivo CSV
+## Formato del Archivo CSV
 
 El sistema espera un archivo CSV con la siguiente estructura:
 
@@ -117,7 +117,7 @@ tiempo,actividad,fc
 
 ---
 
-## 👤 Autores
+## Autores
 
 Proyecto académico desarrollado por:
 ```
